@@ -4,6 +4,7 @@ session_start();
 
 require_once 'config/connection.php';
 require_once 'src/User.php';
+require_once 'vendor/autoload.php';
 
 //$user1 = new User();
 //
@@ -30,11 +31,23 @@ require_once 'src/User.php';
 
 //$user = User::loadUserByEmail($conn, 'mail@domain.com');
 //var_dump($user);
-if (TRUE) {
-    $_SESSION['test'] = "test";
-}
 
-header('Location: test2.php');
+//$faker = Faker\Factory::create();
+//
+//for ($i=0; $i < 9; $i++) {
+//    
+//    $dateFull=$faker->dateTimeThisYear($max = 'now', $timezone = date_default_timezone_get());
+//    $fakeDate = $dateFull->format('Y-m-d H:i:s.u');
+//    $query1 = "INSERT INTO Tweets (user_id, tweet, send_datetime) VALUES (" . rand(5, 9) . ", '" . $faker->text($maxNbChars = 140) . "', '" . $fakeDate . "')";
+//    $conn->query($query1);
+//    
+//    $query = "INSERT INTO Messages (title, message, sender_id, recipient_id, status, send_datetime) VALUES ('Title 1$i', '" . $faker->text($maxNbChars = 140) . "', 5, " . rand(6, 9) . ", 0, NOW())" ;
+//    $conn->query($query);
+//    var_dump($query);
+//}
 
-$conn->close();
-$conn = null;
+//var_dump(User::ifUserExists($conn, 'Jane Smith'));
+
+
+//$conn->close();
+//$conn = null;

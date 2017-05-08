@@ -46,7 +46,7 @@
 
 ?>
 
-<div class="form-group">
+<div class="form-group" style="padding-top: 200px;">
     <form action="login.php" method="POST">
         <div class="row">
             <div class="col-xs-4"></div>
@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-xs-4"></div>
             <div class="col-xs-4">
-                <button type="submit" class="btn btn-default form-control">Log in</button>
+                <button type="submit" class="btn btn-default form-control" style="margin-left: -15px; width: 390px;">Log in</button>
             </div>
             <div class="col-xs-4"></div>
         </div>

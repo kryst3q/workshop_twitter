@@ -156,5 +156,23 @@ class User {
         return $ret;
     }
 
-    //dodać metody login i logout
+    static public function ifUserExists(mysqli $connection, $username) {
+        
+        $query = "SELECT * FROM Users WHERE username = '" . $username . "'";
+        $result = $connection->query($query);
+        
+        if ($result->num_rows != 0) {
+            
+            $userData = $result->fetch_assoc();
+            
+            return (int)$userData['id'];
+            
+        } else {
+            
+            return FALSE;
+            
+        }
+        
+    }
+    
 }
