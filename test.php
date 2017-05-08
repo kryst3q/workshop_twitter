@@ -4,6 +4,7 @@ session_start();
 
 require_once 'config/connection.php';
 require_once 'src/User.php';
+require_once 'src/Comment.php';
 require_once 'vendor/autoload.php';
 
 //$user1 = new User();
@@ -34,20 +35,25 @@ require_once 'vendor/autoload.php';
 
 //$faker = Faker\Factory::create();
 //
-//for ($i=0; $i < 9; $i++) {
+//for ($i=0; $i < 20; $i++) {
 //    
 //    $dateFull=$faker->dateTimeThisYear($max = 'now', $timezone = date_default_timezone_get());
 //    $fakeDate = $dateFull->format('Y-m-d H:i:s.u');
 //    $query1 = "INSERT INTO Tweets (user_id, tweet, send_datetime) VALUES (" . rand(5, 9) . ", '" . $faker->text($maxNbChars = 140) . "', '" . $fakeDate . "')";
 //    $conn->query($query1);
 //    
-//    $query = "INSERT INTO Messages (title, message, sender_id, recipient_id, status, send_datetime) VALUES ('Title 1$i', '" . $faker->text($maxNbChars = 140) . "', 5, " . rand(6, 9) . ", 0, NOW())" ;
+//    $query = "INSERT INTO Comments (text, tweet_id, user_id, creation_date) VALUES ('" . $faker->text($maxNbChars = 60) . "'," . rand(1, 61) . ", " . rand(5, 9) . ", '" . $fakeDate . "')" ;
 //    $conn->query($query);
 //    var_dump($query);
 //}
 
 //var_dump(User::ifUserExists($conn, 'Jane Smith'));
 
-
+//$comments = Comment::loadAllCommentsByPostId($conn, 40);
+//var_dump($comments);
+//
+//$comment = Comment::loadCommentById($conn, 20);
+//var_dump($comment);
+//
 //$conn->close();
 //$conn = null;

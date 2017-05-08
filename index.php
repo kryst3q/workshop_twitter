@@ -1,7 +1,7 @@
 <?php
 
     session_start();
-
+    
     require_once 'config/check_login.php';
     require_once 'config/connection.php';
     require_once 'src/Tweet.php';
@@ -24,7 +24,7 @@
     foreach (Tweet::loadAllTweets($conn) as $tweet) {
         
         echo "<div class='panel panel-default'>";
-        echo "<div class='panel-heading'><a href='userinfo.php?user_id=" . $tweet['user_id'] . "'>" . $tweet['username'] . "</a> <span class='text-muted'>wrote:</span></div>";
+        echo "<div class='panel-heading'><a href='subpages/userinfo.php?user_id=" . $tweet['user_id'] . "'>" . $tweet['username'] . "</a> <span class='text-muted'>wrote:</span></div>";
         echo "<a href='subpages/tweet.php?tweet_id=" . $tweet['id'] . "'><div class='panel-body'>" . $tweet['text'] . "</div></a>";
         echo "<div class='panel-footer'><span class='text-muted'>at </span><small>" . $tweet['creation_date'] . "</small></div>";
         echo "</div>";

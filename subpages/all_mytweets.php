@@ -23,10 +23,9 @@ require_once '../config/connection.php';
             
                 foreach (Tweet::loadAllTweetsByUserId($conn, $userId) as $tweet) {
 
-                    echo "<div class='panel panel-default'>";
+                    echo "<a href='mytweet.php?tweet_id=" . $tweet['id'] . "'><div class='panel panel-default'>";
                     echo "<div class='panel-body'>" . $tweet['text'] . "</div>";
-                    echo "<div class='panel-footer'><span class='text-muted'>at </span><small>" . $tweet['creation_date'] . "</small></div>";
-                    echo "</div>";
+                    echo "</div></a>";
 
                 }
             
