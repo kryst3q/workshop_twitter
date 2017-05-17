@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     }
     
-//    if (($_POST['username'])) {
-//        //dodać walidację!
-//        $allOK = FALSE;
-//        $_SESSION['username_err'] = "<p class='text-danger'>Use only alphanumeric characters</p>";
-//        
-//    }
+    if (ctype_alnum($_POST['username']) == FALSE) {
+        
+        $allOK = FALSE;
+        $_SESSION['username_err'] = "<p class='text-danger'>Use only alphanumeric characters</p>";
+        
+    }
     
     if (strlen($_POST['password']) < 8) {
         

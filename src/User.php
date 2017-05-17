@@ -57,7 +57,7 @@ class User {
                 return TRUE;
             }
         } else {
-            $sql = "UPDATE Users SET username='$this->username', email='$this->email', hashed_password='$this->hashedPassword' WHERE id=$this->id";
+            $sql = "UPDATE Users SET hashed_password='$this->hashedPassword' WHERE id=$this->id";
             $result = $connection->query($sql);
             if($result == TRUE){
                 return TRUE;
@@ -94,6 +94,27 @@ class User {
     static public function loadUserById(mysqli $connection, $id) {
 
         $sql = "SELECT * FROM Users WHERE id=" . $id;
+
+        $result = $connection->query($sql);
+
+        if (($result == TRUE) && ($result->num_rows == 1)) {
+
+            $row = $result->fetch_assoc();
+
+            $loadedUser = new User();
+            $loadedUser->id = $row['id'];
+            $loadedUser->username = $row['username'];
+            $loadedUser->hashedPassword = $row['hashed_password'];
+            $loadedUser->email = $row['email'];
+
+            return $loadedUser;
+        }
+        return NULL;
+    }
+    
+    static public function loadUserByUsername(mysqli $connection, $username) {
+
+        $sql = "SELECT * FROM Users WHERE username='" . $username . "'";
 
         $result = $connection->query($sql);
 

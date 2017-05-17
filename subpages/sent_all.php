@@ -20,6 +20,7 @@ require_once '../config/connection.php';
                     <thead>
                         <tr>
                             <th>Title</th>
+                            <th>Message</th>
                             <th>Recipient</th>
                             <th>Sent</th>
                         </tr>
@@ -27,16 +28,22 @@ require_once '../config/connection.php';
                     <tbody>
                         <?php 
 
-                            foreach (Message::getSentMessages($conn, $_SESSION['user_id']) as $row) {
+                            if (Message::getSentMessages($conn, $_SESSION['user_id']) != NULL) {
+                                
+                                foreach (Message::getSentMessages($conn, $_SESSION['user_id']) as $row) {
 
-                                echo "<tr>";
-                                echo "<td><a href='sent.php?id=" . $row['id'] . "'>" . $row['title'] . "</a></td>";
-                                echo "<td>" . $row['recipient'] . " </td>";
-                                echo "<td>" . $row['send_datetime'] . " </td>";
-                                echo "</tr>";
+                                    $shortMessage = (strlen($row->getMessage()) > 30) ? substr($row->getMessage(), 0, 29) . "..." : $row->getMessage();
 
+                                    echo "<tr>";
+                                    echo "<td><a href='sent.php?id=" . $row->getId() . "'>" . $row->getTitle() . "</a></td>";
+                                    echo "<td>" . $shortMessage . "</td>";
+                                    echo "<td>" . $row->getRecipientname() . " </td>";
+                                    echo "<td>" . $row->getSendDatetime() . " </td>";
+                                    echo "</tr>";
+
+                                }
+                                
                             }
-
                         ?>
                     </tbody>
                 </table>

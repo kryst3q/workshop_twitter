@@ -17,8 +17,9 @@ require_once '../config/connection.php';
         <div class="col-md-10">
             <table class="table table-hover">
                 <thead>
-                    <tr>
+                    <tr class="text-muted">
                         <th>Title</th>
+                        <th>Message</th>
                         <th>Sender</th>
                         <th>Date</th>
                     </tr>
@@ -26,14 +27,28 @@ require_once '../config/connection.php';
                 <tbody>
                     <?php 
 
-                        foreach (Message::getAllMessages($conn, $_SESSION['user_id']) as $row) {
+                        if (Message::getAllMessages($conn, $_SESSION['user_id']) != NULL) {
+                            
+                            foreach (Message::getAllMessages($conn, $_SESSION['user_id']) as $row) {
 
-                            echo "<tr>";
-                            echo "<td><a href='message.php?id=" . $row['id'] . "'>" . $row['title'] . "</a></td>";
-                            echo "<td>" . $row['sender'] . " </td>";
-                            echo "<td>" . $row['send_datetime'] . " </td>";
-                            echo "</tr>";
+                                $shortMessage = (strlen($row->getMessage()) > 30) ? substr($row->getMessage(), 0, 29) . "..." : $row->getMessage();
 
+                                echo "<tr>";
+                                echo "<td><a href='message.php?id=" . $row->getId() . "&status=1'>" . $row->getTitle() . "</a></td>";
+                                echo "<td>" . $shortMessage . "</td>";
+                                echo "<td class='text-muted'>" . $row->getSendername() . " </td>";
+                                echo "<td class='text-muted'>" . $row->getSendDatetime() . " </td>";
+                                echo "<td>";
+                                    if ($row->getStatus() == 0) {
+                                        echo "<span class='glyphicon glyphicon-envelope' style='color: #777'></span>";
+                                    } else {
+                                        echo "<span class='glyphicon glyphicon-check' style='color: #777'></span>";
+                                    }
+                                echo "</td>";
+                                echo "</tr>";
+
+                            }
+                            
                         }
 
                     ?>

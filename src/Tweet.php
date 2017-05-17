@@ -4,6 +4,7 @@ class Tweet {
     
     private $id;
     private $userId;
+    private $username;
     private $text;
     private $creationDate;
     
@@ -23,6 +24,12 @@ class Tweet {
     public function getuserId() {
         
         return $this->userId;
+        
+    }
+    
+    public function getUsername() {
+        
+        return $this->username;
         
     }
     
@@ -118,7 +125,17 @@ class Tweet {
         }
 
         foreach ($result as $row) {
-            $allTweets[] = $row;
+            
+            $row = $result->fetch_assoc();
+
+            $loadedTweet = new Tweet();
+            $loadedTweet->id = $row['id'];
+            $loadedTweet->userId = $row['user_id'];
+            $loadedTweet->text = $row['text'];
+            $loadedTweet->creationDate = $row['creation_date'];
+            $loadedTweet->username = $row['username'];
+            
+            $allTweets[] = $loadedTweet;
         }
         
         return $allTweets;
@@ -139,16 +156,39 @@ class Tweet {
         }
 
         foreach ($result as $row) {
-            $allTweets[] = $row;
+            
+            $row = $result->fetch_assoc();
+
+            $loadedTweet = new Tweet();
+            $loadedTweet->id = $row['id'];
+            $loadedTweet->userId = $row['user_id'];
+            $loadedTweet->text = $row['text'];
+            $loadedTweet->creationDate = $row['creation_date'];
+            $loadedTweet->username = $row['username'];
+            
+            $allTweets[] = $loadedTweet;
         }
         
         return $allTweets;
         
     }
     
-    static public function getNoOfTweets(mysqli $connection) {
+    static public function getNoOfComments(mysqli $connection,$tweetId) {
         
-        return count($this->getAllTweets($connection));
+        $query = "SELECT COUNT(*) AS comments_number FROM Comments WHERE tweet_id=$tweetId";
+        $result = $connection->query($query);
+        
+        if ($result->num_rows != 0) {
+            
+            $noOfComments = $result->fetch_assoc();
+            
+            return $noOfComments['comments_number'];
+            
+        } else {
+            
+            return 0;
+            
+        }
         
     }
     

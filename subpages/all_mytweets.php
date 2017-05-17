@@ -23,9 +23,10 @@ require_once '../config/connection.php';
             
                 foreach (Tweet::loadAllTweetsByUserId($conn, $userId) as $tweet) {
 
-                    echo "<a href='mytweet.php?tweet_id=" . $tweet['id'] . "'><div class='panel panel-default'>";
-                    echo "<div class='panel-body'>" . $tweet['text'] . "</div>";
-                    echo "</div></a>";
+                    echo "<a href='mytweet.php?tweet_id=" . $tweet->getId() . "'><div class='panel panel-default'>";
+                    echo "<div class='panel-body'>" . $tweet->getText() . "</div></a>";
+                    echo "<div class='panel-footer' style='color: #777'>Comments: " . Tweet::getNoOfComments($conn, $tweet->getId()) . "</div>";
+                    echo "</div>";
 
                 }
             

@@ -8,11 +8,21 @@ require_once '../template/messages_navbar.html';
 require_once '../src/Message.php';
 require_once '../config/connection.php';
 
+unset($_SESSION['bad_input']);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
-    var_dump(Message::sendMessage($conn, $_POST['title'], $_POST['message'], $_SESSION['user_id'], (int)$_SESSION['recipient_id']));
-    header('Location: sent.php');
-    exit();
+    if ((preg_match('/^[a-z0-9 .\-]+$/i', $_POST['title'])) && (preg_match('/^[a-z0-9 .\-]+$/i', $_POST['message']))) {
+        
+        var_dump(Message::sendMessage($conn, $_POST['title'], $_POST['message'], $_SESSION['user_id'], (int)$_SESSION['recipient_id']));
+        header('Location: sent_all.php');
+        exit();
+        
+    } else {
+        
+        $_SESSION['bad_input'] = "<p class='text-danger'>You can type only alphanumeric, spaces, period and dashes</p>";
+        
+    }
     
 }
 
@@ -29,20 +39,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (($_SERVER['REQUEST_METHOD'] == 'GET') && (isset($_GET['id']))) {
 
                     $result = Message::getMessageById($conn, $_GET['id']);
-                    $message = $result->fetch_assoc();
 
                     echo "<div class='panel panel-default'>";
-                    echo "<div class='panel-heading'><span class='text-muted'>Title: </span>" . $message['title'] . " <span class='text-muted'> || </span><span class='text-muted'>Author: </span>" . $message['sender'] . "</div>";
-                    echo "<div class='panel-body'>" . $message['message'] . "</div>";
-                    echo "<div class='panel-footer'><span class='text-muted'>at </span><small>" . $message['send_datetime'] . "</small></div>";
+                    echo "<div class='panel-heading'><span class='text-muted'>Title: </span>" . $result->getTitle() . " <span class='text-muted'> || </span><span class='text-muted'>Author: </span>" . $result->getSendername() . "</div>";
+                    echo "<div class='panel-body'>" . $result->getMessage() . "</div>";
+                    echo "<div class='panel-footer'><span class='text-muted'>at </span><small>" . $result->getSendDatetime() . "</small></div>";
                     echo "</div>";
 
-                    $_SESSION['recipient_id'] = $message['sender_id'];
+                    $_SESSION['recipient_id'] = $result->getSenderId();
 
                 }
 
             ?>
             <div class="form-group" style="border-radius: 3px; padding: 10px; background-color: #f5f5f5; border: 1px solid #ddd">
+                <div>
+                    <?php 
+                    
+                        if (isset($_SESSION['bad_input'])) {
+
+                            echo $_SESSION['bad_input'];
+
+                        }
+                    
+                    ?>
+                </div>
                 <form action="message.php" method="POST">
                     <div class="input-group" style="margin-bottom: 10px">
                         <input required type="text" name="title" class="form-control" placeholder="Title">

@@ -20,8 +20,13 @@
             
             echo "<div class='panel panel-default'>";
             echo "<div class='panel-heading'></div>";
-            echo "<div class='panel-body'>Username: " . $user->getUsername() . "</div>";
-            echo "<div class='panel-body'>E-mail: " . $user->getEmail() . "</div>";
+            echo "<div class='panel-body'>";
+            echo "<p><span style='color: #777; font-weight: bold'>Username:</span> " . $user->getUsername() . "</p>";
+            echo "<p><span style='color: #777; font-weight: bold'>E-mail:</span> " . $user->getEmail() . "</p>";
+            if ($userId != $_SESSION['user_id']) {
+                echo "<a href='send.php?to=" . $user->getUsername() . "'><button class='btn btn-default'>Send message</button></a>";
+            }
+            echo "</div>";
             echo "<div class='panel-footer'></div>";
             echo "</div>";
         

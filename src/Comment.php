@@ -131,13 +131,11 @@ class Comment {
             $query = "SELECT * FROM Comments WHERE tweet_id=$tweetId ORDER BY creation_date DESC";
             $result = $connection->query($query);
             
-            if (($result == TRUE) && ($result->num_rows != 0)) {
+            if ($result->num_rows != 0) {
                 
                 $comments = [];
                 
-                for ($i=0; $i<$result->num_rows; $i++) {
-                    
-                    $row = $result->fetch_assoc();
+                foreach ($result as $row) {
                     
                     $loadedComment = new Comment();
                     $loadedComment->setId((int)$row['id']);
@@ -154,7 +152,9 @@ class Comment {
             return NULL;
             
         } else {
+            
             return FALSE;
+            
         }
         
     }

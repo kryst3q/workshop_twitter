@@ -14,21 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $allOK = TRUE;
 
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-        $allOK = FALSE;
-        $_SESSION['email_err'] = "<p class='text-danger'>Invalid email format</p>";
-    } else {
-
-        if (User::loadUserByEmail($conn, $_POST['email'])) {
-
-            $allOK = FALSE;
-            $_SESSION['email_err'] = "<p class='text-danger'>User with entered email already exists</p>";
-        }
-    }
-
     if (strlen($_POST['password']) < 8) {
 
         $allOK = FALSE;
@@ -44,8 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($allOK == TRUE) {
 
         $newUser = new User();
-        $newUser->setEmail($email);
-        $newUser->setUsername($_POST['username']);
         $newUser->setHashedPassword($_POST['password']);
         $newUser->saveToDB($conn);
 
@@ -65,30 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="col-md-10">
             
                 <form action="account.php" method="POST"class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">New email:</label>
-                        <div class="col-sm-10">
-                            <input required type="email" class="form-control" name="email" id="email">
-                        </div>
-                        <?php
-                        if (isset($_SESSION['email_err'])) {
-
-                            echo $_SESSION['email_err'];
-                        }
-                        ?>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">New username:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="username" id="username">
-                        </div>
-                        <?php
-                        if (isset($_SESSION['username_err'])) {
-
-                            echo $_SESSION['username_err'];
-                        }
-                        ?>
-                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="password">New password:</label>
                         <div class="col-sm-10">
@@ -113,12 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                         ?>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="control-label col-sm-2" for="about">About You:</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="about" id="about" placeholder="tell something about you"></textarea>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <span class="col-sm-2" for="span"></span>
                         <div class="col-sm-10">

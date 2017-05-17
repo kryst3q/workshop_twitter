@@ -11,18 +11,28 @@
     require_once '../template/header.html';
     require_once '../template/navbar.html';
     
+    unset($_SESSION['bad_input']);
+    
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
-        $newComment = new Comment();
-        $newComment->setText($_POST['comment']);
-        $newComment->setTweetId($_SESSION['tweet_id']);
-        $newComment->setUserId((int)$_SESSION['user_id']);
-        $newComment->setCreationDate(date('Y-m-d H:i:s'));
+        if (preg_match('/^[a-z0-9 .\-]+$/i', $_POST['comment'])) {
+        
+            $newComment = new Comment();
+            $newComment->setText($_POST['comment']);
+            $newComment->setTweetId($_SESSION['tweet_id']);
+            $newComment->setUserId((int)$_SESSION['user_id']);
+            $newComment->setCreationDate(date('Y-m-d H:i:s'));
 
-        $newComment->saveToDB($conn);
-        header('Location: tweet.php?tweet_id=' . $_SESSION['tweet_id']);
-        unset($_SESSION['tweet_id']);
-        exit();
+            $newComment->saveToDB($conn);
+            header('Location: tweet.php?tweet_id=' . $_SESSION['tweet_id']);
+            unset($_SESSION['tweet_id']);
+            exit();
+        
+        } else {
+            
+            $_SESSION['bad_input'] = "<p class='text-danger'>You can type only alphanumeric, spaces, period and dashes</p>";
+            
+        }
         
     }
     
@@ -44,14 +54,25 @@
             
             require_once '../template/comment.html';
             
-            for ($i=0; $i<count($comments); $i++) {
+            if (isset($_SESSION['bad_input'])) {
+        
+                echo "<div>" . $_SESSION['bad_input'] . "</div>";
+        
+            }
+            
+            if ($comments != null) {
                 
-                $userComment = User::loadUserById($conn, $comments[$i]->getUserId());
+                foreach ($comments as $row) {
+                
+                $userComment = User::loadUserById($conn, $row->getUserId());
                 
                 echo "<div style='border: 1px solid #ddd; border-radius: 3px; padding: 10px; margin-bottom: 5px;'>";
                 echo "<a href='userinfo.php?user_id=" . $userComment->getId() . "'>" . $userComment->getUsername() . "</a> <span style='color: #777'>commented:</span><br>";
-                echo $comments[$i]->getText();
+                echo $row->getText();
                 echo "</div>";
+                
+                }
+                
             }
             
         }
